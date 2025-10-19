@@ -10,14 +10,14 @@ spec:
   
   source:
     repoURL: https://github.com/TecnologiaIntegrada/DotNetTemplateAPI.git
-    targetRevision: HEAD
+    targetRevision: main
     path: charts
     helm:
       valueFiles:
         - values.yaml
       parameters:
         - name: image.tag
-          value: "latest"
+          value: "main"
   
   destination:
     server: https://kubernetes.default.svc
