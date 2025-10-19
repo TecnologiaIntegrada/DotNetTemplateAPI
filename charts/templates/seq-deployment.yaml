@@ -72,16 +72,16 @@ spec:
           mountPath: /data
         livenessProbe:
           httpGet:
-            path: /api/json/status
+            path: /
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
             port: 80
           initialDelaySeconds: 30
           periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /api/json/status
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 5
       volumes:
       - name: seq-data
         persistentVolumeClaim:
