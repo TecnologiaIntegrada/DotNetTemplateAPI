@@ -40,10 +40,10 @@ public class Cliente
 	public string? CpfConjuge { get; private set; }
 	
 	// Endereço
-	public Jazz.Commom.Address? Endereco { get; private set; }
+	public CanadaSoftware.ApiDotNet.Common.Address? Endereco { get; private set; }
 	
 	// Documento
-	public Jazz.Commom.Document? Documento { get; private set; }
+	public CanadaSoftware.ApiDotNet.Common.Document? Documento { get; private set; }
 	
 	// Dados Bancários
 	public BankData? DadosBancarios { get; private set; }
@@ -170,7 +170,7 @@ public class Cliente
 		Country pais,
 		int? tempoResidencia = null)
 	{
-		Endereco = new Jazz.Commom.Address
+		Endereco = new CanadaSoftware.ApiDotNet.Common.Address
 		{
 			PostalCode = cep,
 			Street = logradouro,
@@ -190,13 +190,13 @@ public class Cliente
 	/// Adiciona ou atualiza o documento do cliente
 	/// </summary>
 	public void AdicionarDocumento(
-		Jazz.Commom.DocumentProperties.Type tipo,
+		CanadaSoftware.ApiDotNet.Common.DocumentProperties.Type tipo,
 		DocumentNumber numero,
 		IssuerDate dataEmissao,
 		Issuer orgaoEmissor,
 		FederativeUnity uf)
 	{
-		Documento = new Jazz.Commom.Document
+		Documento = new CanadaSoftware.ApiDotNet.Common.Document
 		{
 			Type = tipo,
 			Number = numero,
@@ -217,7 +217,7 @@ public class Cliente
 		AgencyDac agenciaDac,
 		Account conta,
 		AccountDac contaDac,
-		Jazz.Commom.BankDataProperties.AccountType tipoConta)
+		CanadaSoftware.ApiDotNet.Common.BankDataProperties.AccountType tipoConta)
 	{
 		DadosBancarios = new BankData
 		{
