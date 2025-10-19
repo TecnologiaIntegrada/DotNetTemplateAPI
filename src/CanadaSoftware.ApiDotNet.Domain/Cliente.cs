@@ -1,10 +1,9 @@
 using FluentValidation;
-using Jazz.Commom;
-using Jazz.Commom.AddressProperties;
-using Jazz.Commom.BankDataProperties;
-using Jazz.Commom.DocumentProperties;
-using Jazz.Commom.ClientProperties;
-using Jazz.Common.DocumentProperties;
+using CanadaSoftware.ApiDotNet.Common;
+using CanadaSoftware.ApiDotNet.Common.AddressProperties;
+using CanadaSoftware.ApiDotNet.Common.BankDataProperties;
+using CanadaSoftware.ApiDotNet.Common.DocumentProperties;
+using CanadaSoftware.ApiDotNet.Common.ClientProperties;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CanadaSoftware.ApiDotNet.Domain;

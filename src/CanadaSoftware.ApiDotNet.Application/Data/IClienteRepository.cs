@@ -1,4 +1,4 @@
-using Jazz.Core;
+using CanadaSoftware.ApiDotNet.Core;
 using CanadaSoftware.ApiDotNet.Domain;
 
 namespace CanadaSoftware.ApiDotNet.Application.Data;

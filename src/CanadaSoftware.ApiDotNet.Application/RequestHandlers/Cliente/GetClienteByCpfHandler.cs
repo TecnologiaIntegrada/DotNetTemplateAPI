@@ -1,4 +1,4 @@
-using Jazz.Application;
+using CanadaSoftware.ApiDotNet.Application;
 using CanadaSoftware.ApiDotNet.Application.Data;
 using Serilog;
 using Serilog.Context;

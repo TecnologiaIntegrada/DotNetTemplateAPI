@@ -1,7 +1,7 @@
 using FluentValidation;
-using Jazz.Application;
-using Jazz.Commom.ClientProperties;
-using Jazz.Core;
+using CanadaSoftware.ApiDotNet.Application;
+using CanadaSoftware.ApiDotNet.Commom.ClientProperties;
+using CanadaSoftware.ApiDotNet.Core;
 using CanadaSoftware.ApiDotNet.Application.Data;
 using CanadaSoftware.ApiDotNet.Application.MessageProducer;
 using Serilog;

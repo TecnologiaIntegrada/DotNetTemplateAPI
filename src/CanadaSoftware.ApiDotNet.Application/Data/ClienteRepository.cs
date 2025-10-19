@@ -1,4 +1,4 @@
-using Jazz.EntityFramework;
+using CanadaSoftware.ApiDotNet.EntityFramework;
 using CanadaSoftware.ApiDotNet.Domain;
 using CanadaSoftware.ApiDotNet.EntityFramework;
 using Microsoft.EntityFrameworkCore;

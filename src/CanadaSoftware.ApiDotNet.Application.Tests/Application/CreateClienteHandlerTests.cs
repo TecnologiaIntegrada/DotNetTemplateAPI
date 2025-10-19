@@ -3,9 +3,9 @@ using CanadaSoftware.ApiDotNet.Application.MessageProducer;
 using CanadaSoftware.ApiDotNet.Application.RequestHandlers.Cliente;
 using CanadaSoftware.ApiDotNet.Domain;
 using FluentAssertions;
-using Jazz.Commom;
-using Jazz.Commom.ClientProperties;
-using Jazz.Core;
+using CanadaSoftware.ApiDotNet.Commom;
+using CanadaSoftware.ApiDotNet.Commom.ClientProperties;
+using CanadaSoftware.ApiDotNet.Core;
 using Moq;
 using Xunit;
 

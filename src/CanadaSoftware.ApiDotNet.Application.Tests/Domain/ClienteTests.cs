@@ -1,8 +1,8 @@
 using CanadaSoftware.ApiDotNet.Domain;
 using FluentAssertions;
 using FluentValidation;
-using Jazz.Commom;
-using Jazz.Commom.ClientProperties;
+using CanadaSoftware.ApiDotNet.Commom;
+using CanadaSoftware.ApiDotNet.Commom.ClientProperties;
 using Xunit;
 
 namespace CanadaSoftware.ApiDotNet.Tests.Domain;

@@ -1,5 +1,5 @@
 using System.Net;
-using Jazz.Application;
+using CanadaSoftware.ApiDotNet.Application;
 using CanadaSoftware.ApiDotNet.Application.RequestHandlers.Cliente;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
