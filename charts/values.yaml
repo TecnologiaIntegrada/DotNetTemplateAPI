@@ -1,12 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: canadasoftware/api-dotnet
-  tag: "1.0.0"
-  pullPolicy: IfNotPresent
+  repository: ghcr.io/tecnologiaintegrada/dotnettemplateapi
+  tag: "main"
+  pullPolicy: Always
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 resources:
@@ -60,4 +60,15 @@ seq:
       cpu: "500m"
 
 namespace: dev
+
+ingress:
+  enabled: false
+  host: dotnettemplateapi.canada-software.com
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  tls:
+    enabled: true
+    secretName: api-tls-cert
 

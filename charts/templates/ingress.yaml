@@ -1,20 +1,20 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-ingress
   namespace: {{ .Values.namespace }}
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
 spec:
+  {{- if .Values.ingress.tls.enabled }}
   tls:
   - hosts:
-    - dotnettemplateapi.canada-software.com
-    secretName: api-tls-cert
+    - {{ .Values.ingress.host }}
+    secretName: {{ .Values.ingress.tls.secretName }}
+  {{- end }}
   rules:
-  - host: dotnettemplateapi.canada-software.com
+  - host: {{ .Values.ingress.host }}
     http:
       paths:
       - path: /
@@ -24,4 +24,5 @@ spec:
             name: api-service
             port:
               number: 80
+{{- end }}
 
