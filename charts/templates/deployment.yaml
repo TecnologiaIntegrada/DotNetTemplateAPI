@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: api-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: api-deployment
+  template:
+    metadata:
+      labels:
+        app: api-deployment
+    spec:
+      containers:
+      - name: api
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: CONNECTIONSTRINGS__DEFAULT
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: CONNECTIONSTRINGS__DEFAULT
+              optional: true
+        - name: CONNECTIONSTRINGS__KAFKA
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: CONNECTIONSTRINGS__KAFKA
+              optional: true
+        - name: SEQ__SERVERURL
+          value: "http://{{ .Values.seq.serviceName }}.{{ .Values.namespace }}.svc.cluster.local:5341"
+        - name: KAFKA__CLUSTERAPIKEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: KAFKA__CLUSTERAPIKEY
+              optional: true
+        - name: KAFKA__CLUSTERAPISECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: KAFKA__CLUSTERAPISECRET
+              optional: true
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        livenessProbe:
+          {{- toYaml .Values.livenessProbe | nindent 12 }}
+        readinessProbe:
+          {{- toYaml .Values.readinessProbe | nindent 12 }}
+

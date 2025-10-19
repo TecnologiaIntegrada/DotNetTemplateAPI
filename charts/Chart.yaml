@@ -1,0 +1,7 @@
+apiVersion: v2
+name: api-service
+version: 1.0.0
+namespace: dev
+description: Canada Software API DotNet - Microservice
+icon: https://kubernetes.io/images/favicon.png
+
