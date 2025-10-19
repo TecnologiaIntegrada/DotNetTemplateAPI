@@ -1,140 +1,159 @@
-# 🏦 CanadaSoftware.ApiDotNet
+# CanadaSoftware.ApiDotNet
 
-[![.NET](https://img.shields.io/badge/.NET-7.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-316192?logo=postgresql)](https://www.postgresql.org/)
-[![Kafka](https://img.shields.io/badge/Kafka-3.0-231F20?logo=apache-kafka)](https://kafka.apache.org/)
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-1.27-326CE5?logo=kubernetes)](https://kubernetes.io/)
-
-Microserviço .NET para gestão de clientes e operações bancárias com arquitetura hexagonal, DDD, CQRS e event-driven.
+API .NET 7.0 com arquitetura hexagonal, DDD, CQRS e integração com Kafka.
 
 ---
 
-## 🚀 Funcionalidades
+## 🏗️ Estrutura do Projeto
 
-- ✅ **CRUD Completo de Clientes** com validações
-- ✅ **Eventos Kafka** para integração assíncrona
-- ✅ **PostgreSQL** como banco de dados
-- ✅ **SEQ** para logs centralizados
-- ✅ **Swagger/OpenAPI** para documentação
-- ✅ **Health Checks** para monitoramento
-- ✅ **Polly** para resiliência (retry, circuit breaker)
+### Camadas da Aplicação
+
+```
+src/
+├── CanadaSoftware.ApiDotNet.ServiceHost/        # API REST, Startup, Middlewares
+├── CanadaSoftware.ApiDotNet.Application/        # Use Cases, Handlers CQRS, DTOs
+├── CanadaSoftware.ApiDotNet.Domain/             # Entidades, Agregados, Value Objects
+├── CanadaSoftware.ApiDotNet.EntityFramework/    # Repositórios, DbContext, Migrations
+├── CanadaSoftware.ApiDotNet.Common/             # Utilitários compartilhados
+├── CanadaSoftware.ApiDotNet.Services/           # Serviços de negócio
+├── CanadaSoftware.ApiDotNet.HttpClient/         # Integrações HTTP externas, Polly
+├── CanadaSoftware.ApiDotNet.Globalization/      # Internacionalização, recursos
+├── CanadaSoftware.ApiDotNet.Application.Ecst/   # Event Sourcing, DomainEvents
+└── CanadaSoftware.ApiDotNet.Application.Tests/  # Testes unitários (xUnit, Moq)
+```
+
+### Infraestrutura
+
+```
+charts/                      # Helm Charts para Kubernetes
+├── templates/
+│   ├── deployment.yaml      # Deployment da API
+│   ├── service.yaml         # Service (ClusterIP)
+│   ├── postgresql-statefulset.yaml  # PostgreSQL (independente)
+│   └── seq-deployment.yaml  # SEQ logs (independente)
+└── values.yaml              # Configurações
+
+argocd/                      # GitOps com ArgoCD
+└── application.yaml         # Application manifest
+
+.github/workflows/           # CI/CD com GitHub Actions
+└── deploy.yml               # Pipeline de deploy
+```
 
 ---
 
-## 🏗️ Arquitetura
+## 🛠️ Tecnologias
+
+- **.NET 7.0** - Framework
+- **PostgreSQL 15** - Banco de dados
+- **Entity Framework Core** - ORM
+- **MediatR** - CQRS
+- **FluentValidation** - Validações
+- **Serilog** + **SEQ** - Logs centralizados
+- **Kafka** + **CAP** - Mensageria
+- **Polly** - Resiliência (Retry, Circuit Breaker)
+- **Swagger** - Documentação API
+- **OpenTelemetry** - Observabilidade
+- **xUnit** + **Moq** - Testes
+
+---
+
+## 🏛️ Arquitetura
 
 ### Princípios
 - **SOLID** - Responsabilidade única, inversão de dependências
-- **DDD** - Domain-Driven Design
-- **CQRS** - Separação de comandos e queries
-- **Hexagonal** - Portas e adaptadores
+- **DDD** - Agregados, Value Objects, Repository Pattern
+- **CQRS** - Commands e Queries separados
+- **Hexagonal** - Portas (interfaces) e Adaptadores (implementações)
 
-### Camadas
+### Fluxo de Requisição
 
 ```
-CanadaSoftware.ApiDotNet/
-├── ServiceHost         # API REST, Middlewares
-├── Application         # Use Cases, Handlers
-├── Domain              # Entidades, Regras de Negócio
-├── EntityFramework     # Infraestrutura, Repositórios
-├── Common              # Utilitários compartilhados
-├── Services            # Serviços de negócio
-├── HttpClient          # Integrações externas
-├── Globalization       # Internacionalização
-├── Application.Ecst    # Event sourcing
-└── Application.Tests   # Testes unitários
+HTTP Request
+    ↓
+ServiceHost (API/Controllers)
+    ↓
+Application (Handlers CQRS)
+    ↓
+Domain (Entities, Business Rules)
+    ↓
+EntityFramework (Repository, DbContext)
+    ↓
+PostgreSQL
 ```
 
 ---
 
-## 📦 Pré-requisitos
+## 🚀 Deploy no Kubernetes
 
-- **.NET SDK 7.0+**
-- **Docker** + **Kubernetes**
-- **Helm 3.0+**
-- **kubectl** configurado
+### Pré-requisitos
+- Cluster Kubernetes
+- kubectl configurado
+- Helm 3+
+- Namespace criado
+
+### Deploy Rápido
+
+```bash
+# 1. Criar secrets
+kubectl create secret generic app-secrets \
+  --from-literal=CONNECTIONSTRINGS__DEFAULT="Host=postgresql-service.dev.svc.cluster.local;Port=5432;Database=appdatabase;Username=postgres;Password=postgres" \
+  -n dev
+
+# 2. Deploy
+./DEPLOY.sh dev
+
+# 3. Verificar
+kubectl get pods -n dev
+```
+
+### Pods Deployados
+
+| Pod | Tipo | Replicas | Descrição |
+|-----|------|----------|-----------|
+| **api-deployment** | Deployment | 1-10 (HPA) | API principal |
+| **postgresql** | StatefulSet | 1 | Banco de dados (isolado, sempre ativo) |
+| **seq** | Deployment | 1 | Logs centralizados (isolado, sempre ativo) |
 
 ---
 
-## 🔧 Instalação
+## 🔐 Secrets (Kubernetes Nativo)
 
-### 1. Clonar Repositório
-
-```bash
-git clone <repository-url>
-cd CanadaSoftware.ApiDotNet
-```
-
-### 2. Restaurar Dependências
-
-```bash
-dotnet restore src/CanadaSoftware.ApiDotNet.sln
-```
-
-### 3. Executar Migrations
-
-```bash
-cd src/CanadaSoftware.ApiDotNet.ServiceHost
-dotnet ef database update
-```
-
-### 4. Executar Aplicação
-
-```bash
-dotnet run
-```
-
-Acesse:
-- **Swagger**: http://localhost:5000/swagger
-- **Health**: http://localhost:5000/healthz
-
----
-
-## ☸️ Deploy no Kubernetes
-
-### Passo 1: Criar Secrets
+Criados via `kubectl`:
 
 ```bash
 kubectl create secret generic app-secrets \
-  --from-literal=CONNECTIONSTRINGS__DEFAULT="Host=postgresql-service.dev.svc.cluster.local;Port=5432;Database=appdatabase;Username=postgres;Password=SuaSenhaSegura!" \
-  --from-literal=CONNECTIONSTRINGS__KAFKA="broker:9092" \
+  --from-literal=CONNECTIONSTRINGS__DEFAULT="..." \
+  --from-literal=CONNECTIONSTRINGS__KAFKA="..." \
+  --from-literal=KAFKA__CLUSTERAPIKEY="..." \
+  --from-literal=KAFKA__CLUSTERAPISECRET="..." \
   -n dev
 ```
 
-### Passo 2: Deploy com Helm
-
-```bash
-helm install api-service ./charts \
-  -f ./charts/values.yaml \
-  -n dev \
-  --create-namespace
-```
-
-### Passo 3: Verificar
-
-```bash
-kubectl get pods -n dev
-kubectl logs -f deployment/api-deployment -n dev
-```
-
-### Passo 4: Acessar
-
-```bash
-kubectl port-forward svc/api-service 8080:80 -n dev
-# http://localhost:8080/swagger
-```
+Injetados automaticamente nos pods via `deployment.yaml`.
 
 ---
 
-## 🌐 Endpoints da API
+## 🌐 Endpoints
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST | `/v1/clientes` | Criar cliente |
-| GET | `/v1/clientes/{id}` | Buscar por ID |
-| GET | `/v1/clientes/cpf/{cpf}` | Buscar por CPF |
-| PUT | `/v1/clientes/{id}` | Atualizar cliente |
+| Método | Rota | Descrição |
+|--------|------|-----------|
 | GET | `/healthz` | Health check |
+| GET | `/swagger` | Documentação OpenAPI |
+| POST | `/v1/clientes` | Criar cliente |
+| GET | `/v1/clientes/{id}` | Buscar cliente por ID |
+| GET | `/v1/clientes/cpf/{cpf}` | Buscar cliente por CPF |
+| PUT | `/v1/clientes/{id}` | Atualizar cliente |
+
+---
+
+## 📡 Eventos Kafka
+
+| Tópico | Evento | Quando |
+|--------|--------|--------|
+| `cliente.criado` | ClienteCriadoEvent | POST /v1/clientes |
+| `cliente.atualizado` | ClienteAtualizadoEvent | PUT /v1/clientes/{id} |
+| `cliente.desativado` | ClienteDesativadoEvent | Soft delete |
 
 ---
 
@@ -143,60 +162,78 @@ kubectl port-forward svc/api-service 8080:80 -n dev
 ```bash
 cd src/CanadaSoftware.ApiDotNet.Application.Tests
 dotnet test
-
-# Com cobertura
-dotnet test /p:CollectCoverage=true
 ```
 
-**Total**: 14 testes unitários
+**14 testes unitários** (Domain + Handlers)
 
 ---
 
-## 📊 Observabilidade
+## 📊 CI/CD
 
-### Logs (SEQ)
+### GitHub Actions
+- Build automático
+- Testes automáticos
+- Push para registry
+- Atualização automática via ArgoCD
+
+### ArgoCD
+- Sync automático do Git
+- Deploy em dev/hml/prod
+- Rollback fácil
+- Health checks integrados
+
+---
+
+## 🗄️ PostgreSQL
+
+### Configuração
+
+- **Tipo**: StatefulSet (dados persistentes)
+- **Versão**: PostgreSQL 15 Alpine
+- **Storage**: 10Gi (PersistentVolumeClaim)
+- **DNS**: `postgresql-service.dev.svc.cluster.local:5432`
+
+### Acesso
+
+```bash
+# Port-forward
+kubectl port-forward svc/postgresql-service 5432:5432 -n dev
+
+# Conectar
+psql -h localhost -U postgres -d appdatabase
+```
+
+**Usuário e Senha** são configurados no `values.yaml` e depois via secret do Kubernetes.
+
+---
+
+## 📝 Observabilidade
+
+### SEQ (Logs)
 ```bash
 kubectl port-forward svc/seq-service 5341:80 -n dev
 # http://localhost:5341
 ```
 
-### CAP Dashboard
+### CAP Dashboard (Kafka)
 ```bash
 kubectl port-forward svc/api-service 8080:80 -n dev
 # http://localhost:8080/cap
 ```
 
----
-
-## 🔐 Secrets
-
-**Usar Kubernetes Secrets** (nativo, sem dependências externas):
-
+### Swagger
 ```bash
-kubectl create secret generic app-secrets \
-  --from-literal=CONNECTIONSTRINGS__DEFAULT="..." \
-  --from-literal=CONNECTIONSTRINGS__KAFKA="..." \
-  -n dev
+# http://localhost:8080/swagger
 ```
-
-**Este projeto USA APENAS Kubernetes Secrets** (nativo, sem dependências externas como AWS).
-
----
-
-## 📚 Documentação
-
-- `docs/ARQUITETURA.md` - Arquitetura detalhada
-- `docs/DEPLOY.md` - Guia de deploy
-- `docs/KAFKA_EVENTS.md` - Eventos Kafka
 
 ---
 
 ## 📄 Licença
 
-© Canada Software. Todos os direitos reservados.
+© 2025 Canada Software. Todos os direitos reservados.
 
 ---
 
 **Versão**: 1.0.0  
-**Status**: ✅ Pronto para Produção
-
+**Status**: Pronto para Produção  
+**Deploy**: Kubernetes com ArgoCD
