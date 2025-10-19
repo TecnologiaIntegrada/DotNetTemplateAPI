@@ -9,11 +9,12 @@
 ### 1️⃣ ✅ "Remova do meu projeto AWS Secrets Manager"
 
 **FEITO!**
-- ❌ AWS completamente removido
-- ✅ Usando **Kubernetes Secrets** (comandos no DEPLOY.sh)
-- ✅ Pasta `terraform/` existe mas está vazia (não usa AWS)
-- ✅ Program.cs SEM referências a AWS
-- ✅ Secrets via `kubectl create secret`
+- ✅ **AWS foi completamente REMOVIDO** do projeto
+- ✅ Usando **Kubernetes Secrets** (nativo do Kubernetes)
+- ✅ Pasta `terraform/` foi DELETADA (não existe mais)
+- ✅ Program.cs usa APENAS Kubernetes Secrets
+- ✅ Secrets criados via `kubectl create secret`
+- ✅ **ZERO dependências de AWS**
 
 ### 2️⃣ ✅ "Apague tudo que não é do CanadaSoftware.ApiDotNet"
 
@@ -236,8 +237,8 @@ dotnet run
 
 - [x] ✅ Projeto separado do COB-304
 - [x] ✅ 10 Camadas (igual COB-304)
-- [x] ✅ Pastas charts/, docs/, argocd/, terraform/, src/
-- [x] ✅ SEM AWS Secrets Manager
+- [x] ✅ Pastas charts/, docs/, argocd/, src/ (terraform DELETADO)
+- [x] ✅ **AWS completamente AUSENTE** (usa Kubernetes Secrets)
 - [x] ✅ Kubernetes Secrets configurados
 - [x] ✅ DNS interno (.svc.cluster.local)
 - [x] ✅ ZERO nomes do COB-304

@@ -179,7 +179,7 @@ kubectl create secret generic app-secrets \
   -n dev
 ```
 
-**Não usa AWS!** Tudo configurado via Kubernetes nativo.
+**Este projeto USA APENAS Kubernetes Secrets** (nativo, sem dependências externas como AWS).
 
 ---
 
