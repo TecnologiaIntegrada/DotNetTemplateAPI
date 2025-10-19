@@ -64,31 +64,13 @@ public class ClienteMap : IEntityTypeConfiguration<Cliente>
 			.HasDefaultValue(true);
 
 		// Endereço como owned entity
-		builder.OwnsOne(x => x.Endereco, endereco =>
-		{
-			endereco.Property(e => e.Number)
-				.HasColumnName("EnderecoNumero")
-				.HasMaxLength(20);
-
-			endereco.Property(e => e.Complement)
-				.HasColumnName("EnderecoComplemento")
-				.HasMaxLength(200);
-
-			endereco.Property(e => e.ResidenceTime)
-				.HasColumnName("TempoResidencia");
-		});
+		builder.OwnsOne(x => x.Endereco);
 
 		// Documento como owned entity
-		builder.OwnsOne(x => x.Documento, documento =>
-		{
-			// As propriedades do tipo complexo são mapeadas automaticamente
-		});
+		builder.OwnsOne(x => x.Documento);
 
 		// Dados Bancários como owned entity
-		builder.OwnsOne(x => x.DadosBancarios, dados =>
-		{
-			// As propriedades do tipo complexo são mapeadas automaticamente
-		});
+		builder.OwnsOne(x => x.DadosBancarios);
 	}
 }
 

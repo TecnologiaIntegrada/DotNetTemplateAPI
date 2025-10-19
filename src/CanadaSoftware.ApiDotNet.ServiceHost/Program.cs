@@ -1,7 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using CanadaSoftware.ApiDotNet.Application.Configuration;
-using CanadaSoftware.ApiDotNet.Application.RestApi;
 using CanadaSoftware.ApiDotNet.EntityFramework;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
@@ -64,11 +63,10 @@ try
 		{
 			b.AddSource("CanadaSoftware.ApiDotNet")
 				.AddHttpClientInstrumentation()
-				.AddAspNetCoreInstrumentation()
+				.AddAspNetCoreInstrumentation();
 #if (DEBUG)
-				.AddOtlpExporter()
+			b.AddOtlpExporter();
 #endif
-				.AddNpgsql();
 		});
 
 	// CAP (Kafka)
@@ -109,8 +107,12 @@ try
 		c.RoutePrefix = "swagger";
 	});
 
-	app.MapEndpoints();
+	// TODO: Adicionar endpoints da API
+	// app.MapEndpoints();
 	app.MapHealthChecks("/healthz");
+	
+	// Endpoint simples de teste
+	app.MapGet("/", () => "CanadaSoftware.ApiDotNet API - Running");
 
 	// Aplicar migrations automaticamente
 	using (var scope = app.Services.CreateScope())

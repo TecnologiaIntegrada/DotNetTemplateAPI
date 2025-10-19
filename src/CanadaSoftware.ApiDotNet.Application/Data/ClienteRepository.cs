@@ -1,4 +1,3 @@
-using CanadaSoftware.ApiDotNet.EntityFramework;
 using CanadaSoftware.ApiDotNet.Domain;
 using CanadaSoftware.ApiDotNet.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -6,15 +5,21 @@ using Microsoft.EntityFrameworkCore;
 namespace CanadaSoftware.ApiDotNet.Application.Data;
 
 /// <summary>
-/// Implementação do repositório de Cliente
+/// Repositório de clientes
 /// </summary>
-public class ClienteRepository : EntityFrameWorkRepository<Guid, Cliente, ProposalsDbContext>, IClienteRepository
+public class ClienteRepository : IClienteRepository
 {
-	private readonly ProposalsDbContext _context;
+	private readonly AppDbContext _context;
 
-	public ClienteRepository(ProposalsDbContext dbContext) : base(dbContext)
+	public ClienteRepository(AppDbContext context)
 	{
-		_context = dbContext;
+		_context = context;
+	}
+
+	public async Task<Cliente?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+	{
+		return await _context.Clientes
+			.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 	}
 
 	public async Task<Cliente?> GetByCpfAsync(string cpf, CancellationToken cancellationToken = default)
@@ -23,24 +28,33 @@ public class ClienteRepository : EntityFrameWorkRepository<Guid, Cliente, Propos
 			.FirstOrDefaultAsync(x => x.Cpf.Value == cpf, cancellationToken);
 	}
 
-	public async Task<Cliente?> GetByClienteIdAsync(string clienteId, CancellationToken cancellationToken = default)
-	{
-		return await _context.Clientes
-			.FirstOrDefaultAsync(x => x.ClienteId == clienteId, cancellationToken);
-	}
-
-	public async Task<bool> ExistsByCpfAsync(string cpf, CancellationToken cancellationToken = default)
-	{
-		return await _context.Clientes
-			.AnyAsync(x => x.Cpf.Value == cpf, cancellationToken);
-	}
-
-	public async Task<List<Cliente>> ListActivesAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<Cliente>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
 		return await _context.Clientes
 			.Where(x => x.Ativo)
-			.OrderBy(x => x.Nome)
 			.ToListAsync(cancellationToken);
 	}
-}
 
+	public async Task<Cliente> AddAsync(Cliente cliente, CancellationToken cancellationToken = default)
+	{
+		await _context.Clientes.AddAsync(cliente, cancellationToken);
+		await _context.SaveChangesAsync(cancellationToken);
+		return cliente;
+	}
+
+	public async Task UpdateAsync(Cliente cliente, CancellationToken cancellationToken = default)
+	{
+		_context.Clientes.Update(cliente);
+		await _context.SaveChangesAsync(cancellationToken);
+	}
+
+	public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+	{
+		var cliente = await GetByIdAsync(id, cancellationToken);
+		if (cliente != null)
+		{
+			cliente.Desativar();
+			await UpdateAsync(cliente, cancellationToken);
+		}
+	}
+}

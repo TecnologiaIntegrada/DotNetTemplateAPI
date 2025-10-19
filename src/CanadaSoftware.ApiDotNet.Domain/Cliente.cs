@@ -1,9 +1,5 @@
 using FluentValidation;
-using CanadaSoftware.ApiDotNet.Common;
-using CanadaSoftware.ApiDotNet.Common.AddressProperties;
-using CanadaSoftware.ApiDotNet.Common.BankDataProperties;
-using CanadaSoftware.ApiDotNet.Common.DocumentProperties;
-using CanadaSoftware.ApiDotNet.Common.ClientProperties;
+using CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CanadaSoftware.ApiDotNet.Domain;
@@ -40,10 +36,10 @@ public class Cliente
 	public string? CpfConjuge { get; private set; }
 	
 	// Endereço
-	public CanadaSoftware.ApiDotNet.Common.Address? Endereco { get; private set; }
+	public Address? Endereco { get; private set; }
 	
 	// Documento
-	public CanadaSoftware.ApiDotNet.Common.Document? Documento { get; private set; }
+	public Document? Documento { get; private set; }
 	
 	// Dados Bancários
 	public BankData? DadosBancarios { get; private set; }
@@ -170,18 +166,7 @@ public class Cliente
 		Country pais,
 		int? tempoResidencia = null)
 	{
-		Endereco = new CanadaSoftware.ApiDotNet.Common.Address
-		{
-			PostalCode = cep,
-			Street = logradouro,
-			Number = numero,
-			Complement = complemento ?? string.Empty,
-			District = bairro,
-			State = estado,
-			City = cidade,
-			Country = pais,
-			ResidenceTime = tempoResidencia
-		};
+		Endereco = new Address(cep, logradouro, numero, complemento, bairro, estado, cidade, pais);
 		
 		DataAtualizacao = DateTime.UtcNow;
 	}
@@ -190,20 +175,13 @@ public class Cliente
 	/// Adiciona ou atualiza o documento do cliente
 	/// </summary>
 	public void AdicionarDocumento(
-		CanadaSoftware.ApiDotNet.Common.DocumentProperties.Type tipo,
+		DocumentType tipo,
 		DocumentNumber numero,
 		IssuerDate dataEmissao,
 		Issuer orgaoEmissor,
 		FederativeUnity uf)
 	{
-		Documento = new CanadaSoftware.ApiDotNet.Common.Document
-		{
-			Type = tipo,
-			Number = numero,
-			IssuerDate = dataEmissao,
-			Issuer = orgaoEmissor,
-			FederativeUnity = uf
-		};
+		Documento = new Document(tipo, numero, dataEmissao, orgaoEmissor, uf);
 		
 		DataAtualizacao = DateTime.UtcNow;
 	}
@@ -217,17 +195,9 @@ public class Cliente
 		AgencyDac agenciaDac,
 		Account conta,
 		AccountDac contaDac,
-		CanadaSoftware.ApiDotNet.Common.BankDataProperties.AccountType tipoConta)
+		AccountType tipoConta)
 	{
-		DadosBancarios = new BankData
-		{
-			Bank = banco,
-			Agency = agencia,
-			AgencyDac = agenciaDac,
-			Account = conta,
-			AccountDac = contaDac,
-			AccountType = tipoConta
-		};
+		DadosBancarios = new BankData(banco, agencia, agenciaDac, conta, contaDac, tipoConta);
 		
 		DataAtualizacao = DateTime.UtcNow;
 	}
@@ -308,37 +278,27 @@ public class Cliente
 
 			RuleFor(x => x.Cpf)
 				.NotNull()
-				.WithMessage("CPF é obrigatório")
-				.SetValidator(Cpf.GetValidator());
+				.WithMessage("CPF é obrigatório");
 
 			RuleFor(x => x.Nome)
 				.NotNull()
-				.WithMessage("Nome é obrigatório")
-				.SetValidator(Name.GetValidator());
+				.WithMessage("Nome é obrigatório");
 
 			RuleFor(x => x.Sobrenome)
 				.NotNull()
-				.WithMessage("Sobrenome é obrigatório")
-				.SetValidator(Name.GetValidator());
-
-			RuleFor(x => x.Email)
-				.SetValidator(Email.GetValidator()!)
-				.When(x => x.Email != null);
+				.WithMessage("Sobrenome é obrigatório");
 
 			RuleFor(x => x.Celular)
 				.NotNull()
-				.WithMessage("Celular é obrigatório")
-				.SetValidator(Cellphone.GetValidator());
+				.WithMessage("Celular é obrigatório");
 
 			RuleFor(x => x.Sexo)
 				.NotNull()
-				.WithMessage("Sexo é obrigatório")
-				.SetValidator(Sex.GetValidator());
+				.WithMessage("Sexo é obrigatório");
 
 			RuleFor(x => x.DataNascimento)
 				.NotNull()
-				.WithMessage("Data de nascimento é obrigatória")
-				.SetValidator(BirthDate.GetValidator());
+				.WithMessage("Data de nascimento é obrigatória");
 
 			RuleFor(x => x.Dependentes)
 				.GreaterThanOrEqualTo(0)
@@ -349,21 +309,6 @@ public class Cliente
 				.When(x => x.RendaMensal.HasValue)
 				.WithMessage("Renda mensal não pode ser negativa");
 
-			RuleFor(x => x.NomeMae)
-				.SetValidator(Name.GetValidator()!)
-				.When(x => x.NomeMae != null);
-
-			RuleFor(x => x.NomePai)
-				.SetValidator(Name.GetValidator()!)
-				.When(x => x.NomePai != null);
-
-			RuleFor(x => x.Naturalidade)
-				.SetValidator(Naturalness.GetValidator()!)
-				.When(x => x.Naturalidade != null);
-
-			RuleFor(x => x.Nacionalidade)
-				.SetValidator(Nationality.GetValidator()!)
-				.When(x => x.Nacionalidade != null);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 using CanadaSoftware.ApiDotNet.Application.Data;
 using CanadaSoftware.ApiDotNet.Application.MessageProducer;
-using CanadaSoftware.ApiDotNet.Application.RequestHandlers.Cliente;
 using CanadaSoftware.ApiDotNet.EntityFramework;
 using FluentValidation;
 using MediatR;
@@ -17,14 +16,14 @@ public static class DependencyInjection
 	{
 		// MediatR e Validações
 		services.TryAddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-		services.AddValidatorsFromAssemblyContaining<CreateClienteCommand>();
-		services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateClienteHandler).Assembly));
+		services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+		services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
 		// Repositórios
 		services.AddScoped<IClienteRepository, ClienteRepository>();
 
-		// Event Producers
-		services.AddScoped<IClienteEventProducer, ClienteEventProducer>();
+		// Event Producers (se estiver configurado)
+		// services.AddScoped<IClienteEventProducer, ClienteEventProducer>();
 
 		return services;
 	}

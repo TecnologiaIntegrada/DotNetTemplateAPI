@@ -1,31 +1,16 @@
-using CanadaSoftware.ApiDotNet.Core;
 using CanadaSoftware.ApiDotNet.Domain;
 
 namespace CanadaSoftware.ApiDotNet.Application.Data;
 
 /// <summary>
-/// Interface do repositório de Cliente
+/// Interface do repositório de clientes
 /// </summary>
-public interface IClienteRepository : IRepository<Guid, Cliente>
+public interface IClienteRepository
 {
-	/// <summary>
-	/// Busca um cliente pelo CPF
-	/// </summary>
+	Task<Cliente?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 	Task<Cliente?> GetByCpfAsync(string cpf, CancellationToken cancellationToken = default);
-	
-	/// <summary>
-	/// Busca um cliente pelo ClienteId externo
-	/// </summary>
-	Task<Cliente?> GetByClienteIdAsync(string clienteId, CancellationToken cancellationToken = default);
-	
-	/// <summary>
-	/// Verifica se existe um cliente com o CPF informado
-	/// </summary>
-	Task<bool> ExistsByCpfAsync(string cpf, CancellationToken cancellationToken = default);
-	
-	/// <summary>
-	/// Lista clientes ativos
-	/// </summary>
-	Task<List<Cliente>> ListActivesAsync(CancellationToken cancellationToken = default);
+	Task<IEnumerable<Cliente>> GetAllAsync(CancellationToken cancellationToken = default);
+	Task<Cliente> AddAsync(Cliente cliente, CancellationToken cancellationToken = default);
+	Task UpdateAsync(Cliente cliente, CancellationToken cancellationToken = default);
+	Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }
-
