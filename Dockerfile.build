@@ -1,0 +1,31 @@
+# Dockerfile para compilação e teste da aplicação
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
+WORKDIR /src
+
+# Copiar solution e projetos
+COPY src/*.sln ./
+COPY src/*/*.csproj ./
+RUN for file in $(ls *.csproj); do mkdir -p ${file%.*}/ && mv $file ${file%.*}/; done
+
+# Restore
+RUN dotnet restore CanadaSoftware.ApiDotNet.sln
+
+# Copiar todo o código
+COPY src/ ./
+
+# Build
+RUN dotnet build CanadaSoftware.ApiDotNet.sln --configuration Release --no-restore
+
+# Testes
+RUN dotnet test CanadaSoftware.ApiDotNet.sln --configuration Release --no-build --verbosity normal
+
+# Publish
+RUN dotnet publish src/CanadaSoftware.ApiDotNet.ServiceHost/CanadaSoftware.ApiDotNet.ServiceHost.csproj \
+    -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "CanadaSoftware.ApiDotNet.ServiceHost.dll"]
+
