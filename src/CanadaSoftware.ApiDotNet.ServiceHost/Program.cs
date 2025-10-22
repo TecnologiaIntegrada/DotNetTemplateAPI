@@ -114,7 +114,6 @@ try
 	// Endpoint simples de teste
 	app.MapGet("/", () => "CanadaSoftware.ApiDotNet API - Running");
 
-	// Aplicar migrations automaticamente
 
 	await app.RunAsync();
 }
