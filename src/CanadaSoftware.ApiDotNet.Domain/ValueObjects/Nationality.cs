@@ -5,7 +5,10 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record Nationality
 {
-    public string Value { get; init; }
+    public string Value { get; set; } = string.Empty;
+
+    // Construtor sem parâmetros para EF Core
+    public Nationality() { }
 
     public Nationality(string value)
     {
@@ -22,4 +25,3 @@ public record Nationality
 
     public static implicit operator string(Nationality nationality) => nationality.Value;
 }
-

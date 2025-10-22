@@ -5,7 +5,10 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record Naturalness
 {
-    public string Value { get; init; }
+    public string Value { get; set; } = string.Empty;
+
+    // Construtor sem parâmetros para EF Core
+    public Naturalness() { }
 
     public Naturalness(string value)
     {
@@ -22,4 +25,3 @@ public record Naturalness
 
     public static implicit operator string(Naturalness naturalness) => naturalness.Value;
 }
-

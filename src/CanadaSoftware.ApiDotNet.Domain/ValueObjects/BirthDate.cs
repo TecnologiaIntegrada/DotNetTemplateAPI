@@ -5,7 +5,10 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record BirthDate
 {
-    public DateTime Value { get; init; }
+    public DateTime Value { get; set; }
+
+    // Construtor sem parâmetros para EF Core
+    public BirthDate() { }
 
     public BirthDate(DateTime value)
     {
@@ -18,10 +21,7 @@ public record BirthDate
         Value = value.Date;
     }
 
-    public int Idade => DateTime.Now.Year - Value.Year - (DateTime.Now.DayOfYear < Value.DayOfYear ? 1 : 0);
-
     public override string ToString() => Value.ToString("dd/MM/yyyy");
 
     public static implicit operator DateTime(BirthDate birthDate) => birthDate.Value;
 }
-

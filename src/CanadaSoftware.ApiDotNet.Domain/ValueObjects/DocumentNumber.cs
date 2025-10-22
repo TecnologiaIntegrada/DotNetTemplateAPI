@@ -4,10 +4,10 @@ public record DocumentNumber
 {
     public string Value { get; set; } = string.Empty;
 
-    public DocumentNumber(string value)
-
     // Construtor sem parâmetros para EF Core
     public DocumentNumber() { }
+
+    public DocumentNumber(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Número do documento não pode ser vazio", nameof(value));
@@ -19,6 +19,6 @@ public record DocumentNumber
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(DocumentNumber documentNumber) => documentNumber.Value;
 }
-

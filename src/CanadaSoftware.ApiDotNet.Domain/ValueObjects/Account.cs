@@ -4,10 +4,10 @@ public record Account
 {
     public string Value { get; set; } = string.Empty;
 
-    public Account(string value)
-
     // Construtor sem parâmetros para EF Core
     public Account() { }
+
+    public Account(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Conta não pode ser vazia", nameof(value));
@@ -19,6 +19,6 @@ public record Account
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(Account account) => account.Value;
 }
-

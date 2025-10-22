@@ -4,10 +4,10 @@ public record AccountDac
 {
     public string Value { get; set; } = string.Empty;
 
-    public AccountDac(string value)
-
     // Construtor sem parâmetros para EF Core
     public AccountDac() { }
+
+    public AccountDac(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Dígito verificador da conta não pode ser vazio", nameof(value));
@@ -19,6 +19,6 @@ public record AccountDac
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(AccountDac accountDac) => accountDac.Value;
 }
-

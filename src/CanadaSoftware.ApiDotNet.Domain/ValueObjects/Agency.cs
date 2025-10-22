@@ -4,10 +4,10 @@ public record Agency
 {
     public string Value { get; set; } = string.Empty;
 
-    public Agency(string value)
-
     // Construtor sem parâmetros para EF Core
     public Agency() { }
+
+    public Agency(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Agência não pode ser vazia", nameof(value));
@@ -19,6 +19,6 @@ public record Agency
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(Agency agency) => agency.Value;
 }
-

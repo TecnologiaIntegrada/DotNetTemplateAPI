@@ -4,10 +4,10 @@ public record Bank
 {
     public string Value { get; set; } = string.Empty;
 
-    public Bank(string value)
-
     // Construtor sem parâmetros para EF Core
     public Bank() { }
+
+    public Bank(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Banco não pode ser vazio", nameof(value));
@@ -19,6 +19,6 @@ public record Bank
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(Bank bank) => bank.Value;
 }
-

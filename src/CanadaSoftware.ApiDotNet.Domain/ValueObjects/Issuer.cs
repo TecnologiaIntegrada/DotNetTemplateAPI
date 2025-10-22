@@ -4,10 +4,10 @@ public record Issuer
 {
     public string Value { get; set; } = string.Empty;
 
-    public Issuer(string value)
-
     // Construtor sem parâmetros para EF Core
     public Issuer() { }
+
+    public Issuer(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Órgão emissor não pode ser vazio", nameof(value));
@@ -19,6 +19,6 @@ public record Issuer
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(Issuer issuer) => issuer.Value;
 }
-

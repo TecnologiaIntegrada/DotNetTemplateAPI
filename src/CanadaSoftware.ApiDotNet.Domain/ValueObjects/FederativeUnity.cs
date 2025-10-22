@@ -4,10 +4,10 @@ public record FederativeUnity
 {
     public string Value { get; set; } = string.Empty;
 
-    public FederativeUnity(string value)
-
     // Construtor sem parâmetros para EF Core
     public FederativeUnity() { }
+
+    public FederativeUnity(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("UF não pode ser vazia", nameof(value));
@@ -21,6 +21,6 @@ public record FederativeUnity
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(FederativeUnity federativeUnity) => federativeUnity.Value;
 }
-

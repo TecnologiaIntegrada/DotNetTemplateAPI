@@ -7,7 +7,10 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record Cellphone
 {
-    public string Value { get; init; }
+    public string Value { get; set; } = string.Empty;
+
+    // Construtor sem parâmetros para EF Core
+    public Cellphone() { }
 
     public Cellphone(string value)
     {
@@ -28,4 +31,3 @@ public record Cellphone
 
     public static implicit operator string(Cellphone cellphone) => cellphone.Value;
 }
-

@@ -4,10 +4,10 @@ public record AccountType
 {
     public string Value { get; set; } = string.Empty;
 
-    public AccountType(string value)
-
     // Construtor sem parâmetros para EF Core
     public AccountType() { }
+
+    public AccountType(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Tipo de conta não pode ser vazio", nameof(value));
@@ -21,6 +21,6 @@ public record AccountType
     }
 
     public override string ToString() => Value;
+
     public static implicit operator string(AccountType accountType) => accountType.Value;
 }
-
