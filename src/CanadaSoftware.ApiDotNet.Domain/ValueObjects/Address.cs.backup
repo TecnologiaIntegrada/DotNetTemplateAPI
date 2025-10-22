@@ -5,17 +5,14 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record Address
 {
-    public PostalCode PostalCode { get; init; } = null!;
-    public Street Street { get; init; } = null!;
-    public string Number { get; init; } = string.Empty;
+    public PostalCode PostalCode { get; init; }
+    public Street Street { get; init; }
+    public string Number { get; init; }
     public string? Complement { get; init; }
-    public District District { get; init; } = null!;
-    public State State { get; init; } = null!;
-    public City City { get; init; } = null!;
-    public Country Country { get; init; } = null!;
-
-    // Construtor sem parâmetros para EF Core
-    public Address() { }
+    public District District { get; init; }
+    public State State { get; init; }
+    public City City { get; init; }
+    public Country Country { get; init; }
 
     public Address(
         PostalCode postalCode,
@@ -43,3 +40,4 @@ public record Address
     public override string ToString() => 
         $"{Street}, {Number}{(string.IsNullOrEmpty(Complement) ? "" : $", {Complement}")} - {District} - {City}/{State} - {PostalCode}";
 }
+

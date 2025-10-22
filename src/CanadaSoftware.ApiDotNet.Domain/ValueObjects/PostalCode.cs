@@ -7,7 +7,10 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record PostalCode
 {
-    public string Value { get; init; }
+    public string Value { get; init; } = string.Empty;
+
+    // Construtor sem parâmetros para EF Core
+    public PostalCode() { }
 
     public PostalCode(string value)
     {
@@ -28,4 +31,3 @@ public record PostalCode
 
     public static implicit operator string(PostalCode postalCode) => postalCode.Value;
 }
-
