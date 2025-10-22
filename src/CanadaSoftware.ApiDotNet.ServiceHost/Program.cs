@@ -2,7 +2,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using CanadaSoftware.ApiDotNet.Application.Configuration;
 using CanadaSoftware.ApiDotNet.EntityFramework;
-using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -69,28 +68,28 @@ try
 #endif
 		});
 
-	// CAP (Kafka)
-	builder.Services.AddCap(cap =>
-	{
-		cap.FailedRetryCount = 5;
-		cap.DefaultGroupName = "api-service.grp";
-		cap.UseEntityFramework<AppDbContext>();
-		cap.UseKafka(o =>
-		{
-			o.Servers = config.GetConnectionString("Kafka") ?? "localhost:9092";
-#if (!DEBUG)
-			// Configuração de autenticação para produção
-			if (!string.IsNullOrEmpty(config["Kafka:ClusterApiKey"]))
-			{
-				o.MainConfig.Add("security.protocol", "SASL_SSL");
-				o.MainConfig.Add("sasl.mechanisms", "PLAIN");
-				o.MainConfig.Add("sasl.username", config["Kafka:ClusterApiKey"]);
-				o.MainConfig.Add("sasl.password", config["Kafka:ClusterApiSecret"]);
-			}
-#endif
-		});
-		cap.UseDashboard();
-	});
+	// TODO: Configurar CAP (Kafka) quando necessário
+	// builder.Services.AddCap(cap =>
+	// {
+	//     cap.FailedRetryCount = 5;
+	//     cap.DefaultGroupName = "api-service.grp";
+	//     cap.UseEntityFramework<AppDbContext>();
+	//     cap.UseKafka(o =>
+	//     {
+	//         o.Servers = config.GetConnectionString("Kafka") ?? "localhost:9092";
+	// #if (!DEBUG)
+	//         // Configuração de autenticação para produção
+	//         if (!string.IsNullOrEmpty(config["Kafka:ClusterApiKey"]))
+	//         {
+	//             o.MainConfig.Add("security.protocol", "SASL_SSL");
+	//             o.MainConfig.Add("sasl.mechanisms", "PLAIN");
+	//             o.MainConfig.Add("sasl.username", config["Kafka:ClusterApiKey"]);
+	//             o.MainConfig.Add("sasl.password", config["Kafka:ClusterApiSecret"]);
+	//         }
+	// #endif
+	//     });
+	//     cap.UseDashboard();
+	// });
 
 	builder.Services.ConfigureHttpJsonOptions(opt =>
 	{
@@ -114,11 +113,9 @@ try
 	// Endpoint simples de teste
 	app.MapGet("/", () => "CanadaSoftware.ApiDotNet API - Running");
 
-
 	await app.RunAsync();
 }
 finally
 {
 	await Log.CloseAndFlushAsync();
 }
-
