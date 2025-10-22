@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record Agency
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public Agency(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public Agency() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Agência não pode ser vazia", nameof(value));

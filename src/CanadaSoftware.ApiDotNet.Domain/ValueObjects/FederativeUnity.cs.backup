@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record FederativeUnity
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public FederativeUnity(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public FederativeUnity() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("UF não pode ser vazia", nameof(value));

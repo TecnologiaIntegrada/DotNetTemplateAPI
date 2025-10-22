@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record Account
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public Account(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public Account() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Conta não pode ser vazia", nameof(value));

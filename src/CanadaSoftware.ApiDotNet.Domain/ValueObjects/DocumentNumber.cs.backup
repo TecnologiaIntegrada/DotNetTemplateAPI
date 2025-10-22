@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record DocumentNumber
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public DocumentNumber(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public DocumentNumber() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Número do documento não pode ser vazio", nameof(value));

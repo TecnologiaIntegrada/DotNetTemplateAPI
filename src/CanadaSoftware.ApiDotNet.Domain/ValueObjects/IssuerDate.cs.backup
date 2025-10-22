@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record IssuerDate
 {
-    public string Value { get; init; } = string.Empty;
+    public DateTime Value { get; init; }
 
     public IssuerDate(DateTime value)
-
-    // Construtor sem parâmetros para EF Core
-    public IssuerDate() { }
     {
         if (value > DateTime.Now)
             throw new ArgumentException("Data de emissão não pode ser futura", nameof(value));

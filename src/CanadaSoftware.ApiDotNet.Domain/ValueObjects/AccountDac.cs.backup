@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record AccountDac
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public AccountDac(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public AccountDac() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Dígito verificador da conta não pode ser vazio", nameof(value));

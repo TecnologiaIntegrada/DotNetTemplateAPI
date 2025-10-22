@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record AccountType
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public AccountType(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public AccountType() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Tipo de conta não pode ser vazio", nameof(value));

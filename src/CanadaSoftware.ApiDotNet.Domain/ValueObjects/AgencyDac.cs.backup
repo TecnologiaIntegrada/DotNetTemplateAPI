@@ -2,12 +2,9 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record AgencyDac
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; init; }
 
     public AgencyDac(string value)
-
-    // Construtor sem parâmetros para EF Core
-    public AgencyDac() { }
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("Dígito verificador da agência não pode ser vazio", nameof(value));
