@@ -2,7 +2,7 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record AccountType
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
 
     public AccountType(string value)
 

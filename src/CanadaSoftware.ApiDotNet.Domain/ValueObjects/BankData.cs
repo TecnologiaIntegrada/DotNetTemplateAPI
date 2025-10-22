@@ -5,12 +5,12 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record BankData
 {
-    public Bank Bank { get; init; } = null!;
-    public Agency Agency { get; init; } = null!;
-    public AgencyDac AgencyDac { get; init; } = null!;
-    public Account Account { get; init; } = null!;
-    public AccountDac AccountDac { get; init; } = null!;
-    public AccountType AccountType { get; init; } = null!;
+    public Bank Bank { get; set; } = null!;
+    public Agency Agency { get; set; } = null!;
+    public AgencyDac AgencyDac { get; set; } = null!;
+    public Account Account { get; set; } = null!;
+    public AccountDac AccountDac { get; set; } = null!;
+    public AccountType AccountType { get; set; } = null!;
 
     // Construtor sem parâmetros para EF Core
     public BankData() { }

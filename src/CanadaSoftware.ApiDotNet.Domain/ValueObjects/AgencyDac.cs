@@ -2,7 +2,7 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record AgencyDac
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
 
     public AgencyDac(string value)
 

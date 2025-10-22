@@ -2,7 +2,7 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 
 public record Bank
 {
-    public string Value { get; init; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
 
     public Bank(string value)
 

@@ -5,14 +5,14 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record Address
 {
-    public PostalCode PostalCode { get; init; } = null!;
-    public Street Street { get; init; } = null!;
-    public string Number { get; init; } = string.Empty;
-    public string? Complement { get; init; }
-    public District District { get; init; } = null!;
-    public State State { get; init; } = null!;
-    public City City { get; init; } = null!;
-    public Country Country { get; init; } = null!;
+    public PostalCode PostalCode { get; set; } = null!;
+    public Street Street { get; set; } = null!;
+    public string Number { get; set; } = string.Empty;
+    public string? Complement { get; set; }
+    public District District { get; set; } = null!;
+    public State State { get; set; } = null!;
+    public City City { get; set; } = null!;
+    public Country Country { get; set; } = null!;
 
     // Construtor sem parâmetros para EF Core
     public Address() { }

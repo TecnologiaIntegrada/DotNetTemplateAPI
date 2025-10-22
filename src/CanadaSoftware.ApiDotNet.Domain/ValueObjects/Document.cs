@@ -5,11 +5,11 @@ namespace CanadaSoftware.ApiDotNet.Domain.ValueObjects;
 /// </summary>
 public record Document
 {
-    public DocumentType DocumentType { get; init; } = null!;
-    public DocumentNumber DocumentNumber { get; init; } = null!;
-    public IssuerDate IssuerDate { get; init; } = null!;
-    public Issuer Issuer { get; init; } = null!;
-    public FederativeUnity FederativeUnity { get; init; } = null!;
+    public DocumentType DocumentType { get; set; } = null!;
+    public DocumentNumber DocumentNumber { get; set; } = null!;
+    public IssuerDate IssuerDate { get; set; } = null!;
+    public Issuer Issuer { get; set; } = null!;
+    public FederativeUnity FederativeUnity { get; set; } = null!;
 
     // Construtor sem parâmetros para EF Core
     public Document() { }
